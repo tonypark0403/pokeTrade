@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "PokeGoTrade";
+}
+
+<link rel="stylesheet" media="screen" href="~/Content/effect.css" />
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="~/Home/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}    
+@if (Request.IsAuthenticated && User.IsInRole("User"))
+{
+    <a href="~/Home/IndexUser"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}  
+
+<div class="container2">
+    <ul class="grid cs-style">
+        <li>
+            <a href="~/Posting/Create">
+                <figure>
+                    <img src="~/Content/imgs/create-timesheet-icon.png">
+                    <figcaption>
+                        <h2>Create</h2>
+                    </figcaption>
+                </figure>
+            </a>
+        </li>
+        <li>
+            <a href="~/Posting/Index">
+                <figure>
+                    <img src="~/Content/imgs/view-timesheet-icon.png">
+                    <figcaption>
+                        <h2>View Listings</h2>
+                    </figcaption>
+                </figure>
+            </a>
+        </li>       
+    </ul>
+</div>
+
+@*<script>
+    //go back
+    $('.back').click(function (ev) {
+        ev.preventDefault();
+        history.back();
+    });
+</script>*@

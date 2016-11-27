@@ -1,0 +1,144 @@
+﻿@model PagedList.IPagedList<PokeGoTradeModel.Models.Posting>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Posting";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="~/Content/table.css">
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+@if (TempData["Message"] != null)
+        {
+            if (TempData["Message"].Equals("Created Successfully"))
+            {
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> @TempData["Message"]
+                </div>
+            }
+            else if (TempData["Message"].Equals("Failed Creating a post"))
+            {
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error!</strong> @TempData["Message"]
+                </div>
+            }
+        }            
+
+@*<img class="back" src="~/Content/imgs/backbutton.png">*@
+
+<div id="form">
+    <a href="~/Posting/CreateViewIndex"><img class="back" src="~/Content/imgs/backbutton.png"></a>   <p>My<span> Posting(s)</span></p>
+</div>
+<br /><br /><br /><br />
+
+    @using (Html.BeginForm())
+    {
+        <p>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+    @if (Model.Count < 1)
+    {
+        <div class="table-responsive">
+            <table class="table table-hover posting">
+                <tr>
+                    <th>You have not posted anything yet.</th>                    
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover posting">
+                <tr>
+                    <th>Country</th>
+                    <th>State/Province</th>
+                    <th>City</th>
+                    <th>Wanted</th>
+                    <th>Tradable</th>
+                    <th>Comment</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.State.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pokemon.Name)
+                        </td>
+                        <td>
+                            @foreach (var pokemon in item.Pokemons)
+                        {
+                                @pokemon.Name <br />
+                        }
+                        </td>
+                        <td>
+                            @Html.ActionLink("Comment", "Comment", "Posting",
+                                           new
+                                           {
+                                               postingId = item.PostingId                                              
+                                           },
+                                           new
+                                           {
+                                               @class = "btn btn-info btn-xs",
+                                               data_toggle = "modal",
+                                               data_target = "#modal-container"
+                                           })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTimeValue)
+                        </td>
+                        <td>                            
+                            <a href='@Url.Action("Edit", "Posting", new { id = item.PostingId })'>
+                                <img src='@Url.Content("~/Content/Imgs/edit.png")' title="Edit"/>
+                            </a>|                         
+                            <a href='@Url.Action("Delete", "Posting", new { id = item.PostingId })'>
+                                <img src='@Url.Content("~/Content/Imgs/delete.png")' title="Delete"/>
+                            </a>
+                        </td>
+                    </tr>
+            }
+            </table>
+        </div>
+    }
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+
+<div id="modal-container" class="modal fade" tableindex="-1" role="dialog">
+    <div class="modal-content" style="width:350px !important; height: 360px !important; margin: 70px auto !important;">
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#modal-container').on('hidden.bs.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+</script>
+
+@*<script>
+    //go back
+    $('.backIndex').click(function (ev) {
+        ev.preventDefault();
+        history.back();
+    });
+</script>*@

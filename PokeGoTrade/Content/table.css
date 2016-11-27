@@ -1,0 +1,33 @@
+﻿
+th {
+    background-color: #fdbe0d;    
+} 
+.table {  
+    border: 10px solid #fdbe0d; 
+    border-spacing:0;    
+}
+#form {
+    position: relative;
+    top:60px;
+}
+#form p {
+	text-align: center;
+	font-size: 40px;	
+	font-weight: 700;
+}
+#form p span {
+	color: #fdbe0d;	
+}
+p {	
+	font-size: 20px;	
+	font-weight: 400;
+}
+.findpokemon {
+    border-radius: 20px !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    overflow: hidden; 
+}
+.posting tr{
+    background-color: #fffdd2;   
+}

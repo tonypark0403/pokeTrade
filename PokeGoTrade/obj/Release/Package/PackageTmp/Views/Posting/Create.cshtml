@@ -1,0 +1,175 @@
+﻿@model PokeGoTradeModel.Models.Posting
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<link rel="stylesheet" href="~/Content/form.css">
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+<a href="~/Posting/CreateViewIndex"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+
+<div class="form">  
+    <p>Create<span> Posting</span></p>
+    <div class="form-screen">       
+        @using (Html.BeginForm("Create", "Posting", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">               
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">                  
+                    <div class="col-md-12">
+                        @Html.DropDownList("CountryId", null, "-- Country I live in --", new { @class = "form-control", @onchange = "FillState()" })
+                        @*@Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "-- Select Country --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.State, new SelectList(Enumerable.Empty<SelectListItem>(), "StateId", "Name"), "-- State/Province --", new { @class = "form-control", @onchange = "FillCity()" })
+                        @*@Html.DropDownList("StateId", null, "-- State/Province --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                        @*@Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "-- Select Country --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">                   
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.City, new SelectList(Enumerable.Empty<SelectListItem>(), "CityId", "Name"), "-- City --", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">                   
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">                   
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telephone" } })
+                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">                   
+                    <div class="col-md-12">
+                        @Html.DropDownList("PokemonId", null, "-- Pokemon I want to get--", new { @class = "form-control" })
+                        @*@Html.DropDownListFor(m => m.Pokemon, new SelectList(ViewBag.PokemonList, "PokemonId", "Name"), "-- Select Pokemon --", new { @class = "form-control" })*@
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    @Html.Label("Choose the pokemon(s) you have for trading")
+                   
+                        <table>
+                            <tr>
+                                @{
+                                    int cnt = 0;
+                                    List<PokeGoTradeModel.ViewModels.AssignedPokemonData> pokemons = ViewBag.Pokemons;
+
+                                    foreach (var pokemon in pokemons)
+                                    {
+                                        if (cnt++ % 3 == 0)
+                                        {
+                                            @:</tr><tr>
+                                }
+                                        @:<td>
+                                            <input type="checkbox"
+                                                   name="selectedPokemons"
+                                                   value="@pokemon.PokemonID"
+                                                   @(Html.Raw(pokemon.Assigned ? "checked=\"checked\"" : "")) />
+                                            @pokemon.Name
+                                            @:</td>
+                            }
+                                    @:</tr>
+                                }
+                            </table>
+                        
+                    </div>
+
+                    <div class="form-group">                       
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.Comment, new { @placeholder = "Comments (ex: meeting location)", htmlAttributes = new { @class = "form-control" } })                             
+                            @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">                       
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+               
+                                    }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        function FillState() {
+            var countryId = $('#CountryId').val();
+
+            $.ajax({
+                url: '/Posting/FillState',
+                type: "GET",
+                dataType: "JSON",
+                data: { country: countryId },
+                success: function (states) {
+                    $("#State").html(""); // clear before appending new list
+                    $("#State").append(
+                            $('<option>-- State/Province --</option>'))
+                    $.each(states, function (i, state) {
+                        $("#State").append(
+                            $('<option></option>').val(state.StateId).html(state.Name));
+                    });
+                }
+            });
+        }
+
+        function FillCity() {
+            var stateId = $('#State').val();
+      
+            $.ajax({
+                url: '/Posting/FillCity',
+                type: "GET",
+                dataType: "JSON",
+                data: { state: stateId },
+                success: function (cities) {
+                    $("#City").html(""); // clear before appending new list
+                    $("#City").append(
+                            $('<option>-- City --</option>'))
+                    $.each(cities, function (i, city) {
+                        $("#City").append(
+                            $('<option></option>').val(city.CityId).html(city.Name));
+                    });
+                }
+            });
+        }
+
+        //limit characters in textarea and copy&paste characters
+        $(document).ready(function () {
+            function limits(obj, limit) {
+                var text = $(obj).val();
+                var length = text.length;
+                if (length > limit) {
+                    $(obj).val(text.substr(0, limit));
+                } 
+            }
+
+            $('textarea').keyup(function () {
+                limits($(this), 200);
+            })
+        })
+
+        ////go back
+        //$('.back').click(function (ev) {
+        //    ev.preventDefault();
+        //    history.back();
+        //});
+    </script>
+}

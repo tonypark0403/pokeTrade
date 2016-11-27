@@ -1,0 +1,89 @@
+﻿
+body {	
+	background-image: url(http://www.solidbackgrounds.com/images/2560x1440/2560x1440-beige-solid-color-background.jpg);	
+}
+.container2 {		
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;     
+    margin: 0px auto;     
+}
+.grid li {
+	display: inline-block;
+	width: 260px;
+	margin: 0;
+	padding: 50px;
+	text-align: left;
+	position: relative;
+}
+.grid figure {
+	margin: 0;
+	position: relative;
+}
+.grid figure img {
+	width: 90%;
+	display: block;
+	position: relative;
+}
+.grid figcaption {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px;	
+	background: #fdbe0d;
+	color: white;
+}
+.grid figcaption h2 {
+	margin: 0;
+	padding: 0;
+	font-family: 'Sniglet', cursive;
+	color: black;
+}
+
+/* Caption Style 5 */
+.cs-style figure img {
+	z-index: 10;
+	-webkit-transition: -webkit-transform 0.4s;
+	-moz-transition: -moz-transform 0.4s;
+	transition: transform 0.4s;
+}
+.no-touch .cs-style figure:hover img,
+.cs-style figure.cs-hover img {
+	-webkit-transform: scale(0.0);
+	-moz-transform: scale(0.0);
+	-ms-transform: scale(0.0);
+	transform: scale(0.0);
+}
+.cs-style figcaption {
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	-webkit-transform: scale(0.7);
+	-moz-transform: scale(0.7);
+	-ms-transform: scale(0.7);
+	transform: scale(0.7);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+	-moz-transition: -moz-transform 0.4s, opacity 0.4s;
+	transition: transform 0.4s, opacity 0.4s;
+}
+.no-touch .cs-style figure:hover figcaption,
+.cs-style figure.cs-hover figcaption {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+.cs-style figure a {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+body > div.container.body-content > div > ul {
+    text-align: center;
+}

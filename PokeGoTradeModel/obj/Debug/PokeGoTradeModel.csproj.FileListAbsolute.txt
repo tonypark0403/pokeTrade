@@ -1,0 +1,16 @@
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\PokeGoTradeModel.dll.config
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\PokeGoTradeModel.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\PokeGoTradeModel.pdb
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\EntityFramework.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\EntityFramework.SqlServer.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Newtonsoft.Json.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\EntityFramework.xml
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\EntityFramework.SqlServer.xml
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\bin\Debug\Newtonsoft.Json.xml
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\obj\Debug\PokeGoTradeModel.csprojResolveAssemblyReference.cache
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\obj\Debug\PokeGoTradeModel.dll
+D:\Study\Dropbox\Visual Studio 2015\Projects\pokkegotrade-master\PokeGoTradeModel\obj\Debug\PokeGoTradeModel.pdb

@@ -1,0 +1,10 @@
+﻿enable-migrations -ContextProject PokeGoTradeModel -ContextTypeName PGTContext -MigrationsDirectory Migrations\PokeGoTradeMigrations
+add-migration -ConfigurationTypeName PokeGoTrade.Migrations.PokeGoTradeMigrations.Configuration "InitialCreate"
+update-database -ConfigurationTypeName PokeGoTrade.Migrations.PokeGoTradeMigrations.Configuration -Verbose
+
+enable-Migrations -ContextTypeName ApplicationDbContext –ContextProject PokeGoTradeModel -MigrationsDirectory Migrations\AccountMigrations
+add-migration -ConfigurationTypeName PokeGoTrade.Migrations.AccountMigrations.Configuration "User Identities"
+update-database -ConfigurationTypeName PokeGoTrade.Migrations.AccountMigrations.Configuration -Verbose
+
+
+

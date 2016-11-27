@@ -1,0 +1,159 @@
+﻿@model PagedList.IPagedList<PokeGoTradeModel.Models.Posting>
+@using Microsoft.AspNet.Identity
+@using PagedList.Mvc;
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="~/Content/table.css">
+
+<div class="table-responsive">
+    <table class="table table-hover findpokemon">
+        <tr>
+            <th>Username</th>
+            <th>Pokemon he/she owns</th>
+            <th>Pokemon(s) he/she wants</th>
+            <th>Comment</th>
+            <th>Description</th>
+            <th>Created on</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            string _pokemonOwned = null;
+            string _duplicatePokemonWanted = null;
+            string _duplicatePokemonOwned = null;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @foreach (var pokemon in item.Pokemons)
+                    {
+                        string pokemonOwned = string.Join(",", ViewBag.PokemonOwned);
+
+                        if (pokemon.Name.Equals(pokemonOwned))
+                        {
+                            @pokemon.Name
+                            _pokemonOwned = @pokemon.Name;
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pokemon.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Comment", "Comment", "FindPokemon",
+                                           new
+                                           {
+                                               postingId = item.PostingId
+                                           },
+                                           new
+                                           {
+                                               @class = "btn btn-info btn-xs",
+                                               data_toggle = "modal",
+                                               data_target = "#modal-container2"
+                                           })
+                </td>
+
+                @*independently checks if the values of pokemonWanted && pokemonOwned in each row in OfferMade table *@
+                @*match with the search result posting model's pokemonWanted && pokemonOwned values*@
+                @foreach (var duplicate in ViewBag.DuplicateOffer)
+                {
+                    if(item.Pokemon.Name == duplicate.PokemonWanted && _pokemonOwned == duplicate.PokemonOwned)
+                    {
+                        _duplicatePokemonWanted = duplicate.PokemonWanted;
+                        _duplicatePokemonOwned = duplicate.PokemonOwned;
+                    }                   
+                }
+
+                @*disable an offer button if the current user is selecting his/her own post*@
+                    @if (item.Username.Equals(User.Identity.Name))
+                    {
+                        <td>
+                            <input type="button" class="btn btn-danger btn-xs" value="Make an offer" disabled />
+                        </td>
+                    }
+                    //disable an offer button if the user has already made an offer for the same post once
+                    else if (item.Pokemon.Name == _duplicatePokemonWanted && _pokemonOwned == _duplicatePokemonOwned)
+                    {
+                        <td>
+                            <input type="button" class="btn btn-danger btn-xs" value="Submitted" disabled />
+                        </td>
+                    }
+                    //otherwise create an normal offer button
+                    else
+                    {
+                        <td>
+                            @Html.ActionLink("Make an offer", "Offer", "FindPokemon",
+                                           new
+                                           {
+                                               postingId = item.PostingId,
+                                               country = item.Country.Name,
+                                               state = item.State.Name,
+                                               city = item.City.Name,
+                                               currentUser = User.Identity.GetUserName(),
+                                               selectedUser = item.Username,
+                                               pokemonOwned = _pokemonOwned,
+                                               pokemonWanted = item.Pokemon.Name
+                                           },
+                                           new
+                                           {
+                                               @class = "btn btn-danger btn-xs",
+                                               data_toggle = "modal",
+                                               data_target = "#modal-container"
+                                           })
+                        </td>
+                    }               
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTimeValue)
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @*since the Model for countryId, cityId, pokemondId can only be passed from the Index View,*@
+    @*I needed to use viewbags to pass them to the GetPokemonPosting method*@
+    @Html.PagedListPager(Model, page => Url.Action("GetPokemonPosting",
+       new
+       {
+           page,
+           CountryId = ViewBag.CountryId,
+           state = ViewBag.StateId,
+           city = ViewBag.CityId,
+           PokemonId = ViewBag.PokemonId
+       }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "showResult" }))
+</div>
+
+<div id="modal-container" class="modal fade" tableindex="-1" role="dialog">
+    <div class="modal-content" style="width:350px !important; height: 360px !important; margin: 70px auto !important;">
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+<div id="modal-container2" class="modal fade" tableindex="-1" role="dialog">
+    <div class="modal-content" style="width:350px !important; height: 360px !important; margin: 70px auto !important;">
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //very important since it clears the data fields used in the previous modal.
+    //if not used, after submitting the modal form, and click on the other button to make another offer,
+    //it will still maintain the previous data fields in the modal which will create a duplicate data row after submitting the form.
+    $('#modal-container').on('hidden.bs.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $('#modal-container2').on('hidden.bs.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+</script>

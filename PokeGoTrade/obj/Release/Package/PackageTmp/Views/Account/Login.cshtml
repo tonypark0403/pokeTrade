@@ -1,0 +1,40 @@
+﻿@using PokeGoTrade.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+<link rel="stylesheet" href="~/Content/login.css">
+
+<div class="login">
+    <p>PokkeGo<span>Trade v.1</span></p>
+    <div class="login-screen">
+        <div class="app-title">
+            <h1>Login</h1>
+        </div>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+            @Html.AntiForgeryToken()
+            <div class="login-form">
+                <div class="control-group">
+                    @Html.TextBoxFor(m => m.Username, new { @class = "login-field", placeholder = "Username" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                </div>
+                <div class="control-group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "login-field", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>                  
+                    <div>
+                        <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" />
+                    </div>
+                </div>
+            @* Enable this once you have account confirmation enabled for password reset functionality
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>*@
+        }
+    </div>   
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")    
+}

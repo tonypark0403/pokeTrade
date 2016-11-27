@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link rel="stylesheet" media="screen" href="~/Content/site.css" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header" style="margin:10px auto">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a href="/Home/Index"><img src="~/Content/imgs/logo.png" class="navbar-left" /></a>
+                }
+                @if (Request.IsAuthenticated && User.IsInRole("User"))
+                {
+                    <a href="/Home/IndexUser"><img src="~/Content/imgs/logo.png" class="navbar-left" /></a>
+                }
+                @if (!Request.IsAuthenticated)
+                {
+                    <a href="/Home/About"><img src="~/Content/imgs/logo.png" class="navbar-left" /></a>
+                }
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @if (TempData["CaptchaMessage"] != null)
+        {
+            if (TempData["CaptchaMessage"].Equals("Registered Successfully"))
+            {
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> @TempData["CaptchaMessage"]
+                </div>
+            }
+            else if (TempData["CaptchaMessage"].Equals("The secret parameter is missing") || TempData["CaptchaMessage"].Equals("The secret parameter is invalid or malformed") || TempData["CaptchaMessage"].Equals("The captcha input is missing") || TempData["CaptchaMessage"].Equals("The captcha input is invalid or malformed") || TempData["CaptchaMessage"].Equals("Error occured. Please try again"))
+            {
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error!</strong> @TempData["CaptchaMessage"]
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error!</strong> @TempData["CaptchaMessage"]
+                </div>
+            }
+        }
+        @RenderBody()     
+    </div>       
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

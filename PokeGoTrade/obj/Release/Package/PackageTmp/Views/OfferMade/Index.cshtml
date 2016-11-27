@@ -1,0 +1,184 @@
+﻿@model PagedList.IPagedList<PokeGoTradeModel.Models.OfferMade>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Offer(s) I Made";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="~/Content/table.css">
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="~/Home/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}
+@if (Request.IsAuthenticated && User.IsInRole("User"))
+{
+    <a href="~/Home/IndexUser"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}  
+
+<div id="form"> 
+    <p>Offer(s)<span> I Made</span></p>
+</div>
+<br /><br /><br /><br />
+
+    @using (Html.BeginForm())
+    {
+        <p>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
+    }
+    @if (Model.Count < 1)
+    {
+        <div class="table-responsive">
+            <table class="table table-hover posting">
+                <tr>
+                    <th>You have not made any offers yet.</th>
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover" id="offerMadeTable">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Country")
+                    </th>
+                    <th>
+                        @Html.DisplayName("State/Province")
+                    </th>
+                    <th>
+                        @Html.DisplayName("City")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Username")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Pokemon")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Trade with My")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Status")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Made on")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+
+                    int _postingId = item.PostingId;
+                    var postingId = (List<int>)ViewBag.postingId;
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.State)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SelectedUser)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PokemonOwned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PokemonWanted)
+                        </td>
+                        @if (postingId.Contains(_postingId))
+                        {
+                            if (item.Status == "Confirmed")
+                            {
+                                <td>
+                                    <span>@item.Status</span>
+                                    @Html.ActionLink(" ", "Confirmed", "OfferMade",
+                           new
+                           {
+                               username = item.SelectedUser,
+                               postingId = item.PostingId
+                           },
+                           new
+                           {
+                               @class = "glyphicon glyphicon-thumbs-up",
+                               data_toggle = "modal",
+                               data_target = "#modal-container"
+                           })
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <span>@item.Status</span>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td>
+                                <span>Posting Deleted</span>
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTimeValue)
+                        </td>
+                        <td>
+                            <a href='@Url.Action("Delete", "OfferMade", new { id = item.OfferMadeId })'>
+                                <img src='@Url.Content("~/Content/Imgs/delete.png")' title="Delete" />
+                            </a>                            
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+
+    <div id="modal-container" class="modal fade" tableindex="-1" role="dialog">     
+        <div class="modal-content" style="width:350px !important; height: 360px !important; margin: 70px auto !important;">
+            <div class="modal-body">
+            </div>            
+        </div>
+    </div>
+
+    <script>
+        //add css
+        $(document).ready(function () {
+            $('#offerMadeTable td span').each(function () {
+                if ($(this).text() === 'Pending') {
+                    $(this).closest('tr').addClass('pending');
+                }
+                if ($(this).text() === 'Confirmed') {
+                    $(this).closest('tr').addClass('accepted');
+                }
+                if ($(this).text() === 'Declined') {
+                    $(this).closest('tr').addClass('declined');
+                }
+            });
+        });
+
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        ////go back
+        //$('.back').click(function (ev) {
+        //    ev.preventDefault();
+        //    history.back();
+        //});
+    </script>

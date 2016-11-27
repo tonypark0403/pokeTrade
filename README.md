@@ -7,7 +7,7 @@ https://poketrade.azurewebsites.net/
 
 PokkeGoTrade
 
-PokemonGo Trade Web Application
+PokemonGo Trade Web Application - with 2 Database Contexts
 
 Designed and implemented a PokemonGo trade ASP.NET MVC 5 web application.
 

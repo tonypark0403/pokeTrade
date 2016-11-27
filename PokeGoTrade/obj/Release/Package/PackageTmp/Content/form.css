@@ -1,0 +1,94 @@
+﻿
+* {
+	box-sizing: border-box;
+}
+*:focus {
+	outline: none;
+}
+body {	
+	background-image: url(http://www.solidbackgrounds.com/images/2560x1440/2560x1440-beige-solid-color-background.jpg);	  
+}
+
+.form {
+	margin: 0px auto;
+	width: 500px;   
+}
+.form-screen {
+	background-color: #fadb86;
+	padding: 20px;
+	border-radius: 5px
+}
+.app-title {
+	text-align: center;
+	color: #777;
+}
+.form-form {
+	text-align: center;		
+}
+.control-group {
+	margin-bottom: 10px;
+}
+
+input:focus {
+	border: 2px solid #3498DB;
+	box-shadow: none;
+}
+.btn {
+	border: 2px solid transparent;
+	background: #07E883;
+	color: #ffffff;
+	font-size: 16px;
+	line-height: 25px;
+	padding: 10px 0;
+	text-decoration: none;
+	text-shadow: none;
+	border-radius: 3px;
+	box-shadow: none;
+	transition: 0.25s;
+	display: block;
+	width: 250px;
+	margin: 0 auto;
+}
+
+.btn {
+    background: #fdbe0d !important;    
+}
+.btn:hover {
+	background-color: #f8d05a !important;
+    border: 2px solid #3498DB;
+}
+.login-link {
+	font-size: 12px;
+	color: #444;
+	display: block;
+	margin-top: 12px;
+}
+.form p {
+	text-align: center;
+	font-size: 40px;	
+	font-weight: 700;
+}
+.form p span {
+	color: #fdbe0d;	
+}
+body > div.container.body-content > div > div > form > div > div:nth-child(3) > input {
+    width: 250px;
+}
+
+table{    
+    table-layout:fixed;
+    width: 480px;
+    position: relative;
+    left: 40px;
+}
+input, select, textarea {
+    max-width: 500px;
+}
+textarea {
+    width: 450px;
+    height: 150px;    
+}
+body > div.container.body-content > div.form > div > form > div > div:nth-child(6) > label {
+    position: relative;
+    left: 30px;
+}

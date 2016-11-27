@@ -1,0 +1,28 @@
+﻿/*back button*/
+.back {
+    transition: all .2s ease-in-out;
+}
+
+.back:hover {
+    transform: scale(1.2);
+}
+.back {
+    width:100px;
+    height:100px;
+    position: relative;
+    top: 50px;
+}
+
+.backIndex {
+    transition: all .2s ease-in-out;
+}
+
+.backIndex:hover {
+    transform: scale(1.2);
+}
+.backIndex {
+    width:100px;
+    height:100px;
+    position: relative;
+    top: -10px;
+}

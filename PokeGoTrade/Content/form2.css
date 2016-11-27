@@ -1,0 +1,42 @@
+﻿
+.form {
+	margin: 0px auto;
+	width: 500px;    
+}
+.form-screen {
+	background-color: #fadb86;
+	padding: 20px;
+	border-radius: 5px
+}
+.find {
+	border: 2px solid transparent;
+	background: #fdbe0d;  
+	color: #ffffff;
+	font-size: 16px;
+	line-height: 15px;
+	padding: 10px 0;
+	text-decoration: none;
+	text-shadow: none;
+	border-radius: 3px;
+	box-shadow: none;
+	transition: 0.25s;
+	display: block;
+	width: 150px;
+	margin: 0 auto;
+}
+.find:hover {
+	background-color: #f8d05a !important;
+    border: 2px solid #3498DB;
+}
+.form p {
+	text-align: center;
+	font-size: 40px;	
+	font-weight: 700;
+}
+.form p span {
+	color: #fdbe0d;	
+}
+select {
+    margin: 0 auto;
+    text-align: center;
+}

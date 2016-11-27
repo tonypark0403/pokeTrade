@@ -1,0 +1,125 @@
+﻿@model PokeGoTradeModel.Models.FindPokemon
+
+@{
+    ViewBag.Title = "Find Pokemon";
+}
+
+<link rel="stylesheet" href="~/Content/form2.css">
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="~/Home/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}
+@if (Request.IsAuthenticated && User.IsInRole("User"))
+{
+    <a href="~/Home/IndexUser"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}
+
+<div class="form">
+    <p>Find<span> Pokemon</span></p>
+    <div class="form-screen">
+        @using (Ajax.BeginForm("GetPokemonPosting", "FindPokemon", new AjaxOptions
+        {
+            HttpMethod = "POST",
+            UpdateTargetId = "showResult",
+            //LoadingElementId = "loader"
+        }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownList("CountryId", null, "-- Country --", new { @class = "form-control", @onchange = "FillState()" })
+                        @*@Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "-- Select Country --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.State, new SelectList(Enumerable.Empty<SelectListItem>(), "StateId", "Name"), "-- State/Province --", new { @class = "form-control", @onchange = "FillCity()" })
+                        @*@Html.DropDownList("StateId", null, "-- State/Province --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                        @*@Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "-- Select Country --", new { @class = "form-control", @onchange = "FillCity()" })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.City, new SelectList(Enumerable.Empty<SelectListItem>(), "CityId", "Name"), "-- City --", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.DropDownList("PokemonId", null, "-- Pokemon I want --", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="submit" value="Search" class="btn btn-default find" />
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+@*<div id="loader" style="display:none">
+        <img src="~/Content/imgs/ajax-loader.gif" />
+    </div>*@
+
+<div id="showResult"></div>
+
+@section Scripts {
+    <script>
+        function FillState() {
+            var countryId = $('#CountryId').val();
+
+            $.ajax({
+                url: '/Posting/FillState',
+                type: "GET",
+                dataType: "JSON",
+                data: { country: countryId },
+                success: function (states) {
+                    $("#State").html(""); // clear before appending new list
+                    $("#State").append(
+                            $('<option>-- State/Province --</option>'))
+                    $.each(states, function (i, state) {
+                        $("#State").append(
+                            $('<option></option>').val(state.StateId).html(state.Name));
+                    });
+                }
+            });
+        }
+
+        function FillCity() {
+            var stateId = $('#State').val();
+
+            $.ajax({
+                url: '/Posting/FillCity',
+                type: "GET",
+                dataType: "JSON",
+                data: { state: stateId },
+                success: function (cities) {
+                    $("#City").html(""); // clear before appending new list
+                    $("#City").append(
+                            $('<option>-- City --</option>'))
+                    $.each(cities, function (i, city) {
+                        $("#City").append(
+                            $('<option></option>').val(city.CityId).html(city.Name));
+                    });
+                }
+            });
+        }
+
+            ////go back
+            //$('.back').click(function (ev) {
+            //    ev.preventDefault();
+            //    history.back();
+            //});
+    </script>
+}

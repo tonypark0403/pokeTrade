@@ -1,0 +1,120 @@
+﻿@model PokeGoTradeModel.Models.Posting
+
+@{
+    ViewBag.Title = "Edit";
+}
+<style>
+    .edit {
+        margin: 0px 300px;
+    }
+</style>
+
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+<a href="~/Posting/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+
+<div class="edit">
+    <h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">     
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PostingId)        
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pokemon.Name, "Wanted", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Pokemon.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Pokemon.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Tradable", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-offset-2 col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            List<PokeGoTradeModel.ViewModels.AssignedPokemonData> pokemons = ViewBag.Pokemons;
+
+                            foreach (var pokemon in pokemons)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td>
+                                    <input type="checkbox"
+                                           name="selectedPokemons"
+                                           value="@pokemon.PokemonID"
+                                           @(Html.Raw(pokemon.Assigned ? "checked=\"checked\"" : "")) />
+                                        @pokemon.Name
+                                        @:</td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.TextAreaFor(model => model.Comment, new { @placeholder = "Comments (ex: meeting location)", htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+    $(document).ready(function () {
+            function limits(obj, limit) {
+                var text = $(obj).val();
+                var length = text.length;
+                if (length > limit) {
+                    $(obj).val(text.substr(0, limit));
+                }
+            }
+
+            $('textarea').keyup(function () {
+                limits($(this), 200);
+            })
+    })
+
+    ////go back
+    //$('.back').click(function (ev) {
+    //    ev.preventDefault();
+    //    history.back();
+    //});
+    </script>
+}

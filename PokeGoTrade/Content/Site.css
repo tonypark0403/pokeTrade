@@ -1,0 +1,126 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Sniglet|Raleway:900);
+
+body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+    background-image: url(http://www.solidbackgrounds.com/images/2560x1440/2560x1440-beige-solid-color-background.jpg);	
+    font-family: 'Sniglet', cursive;  
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#modal-container > div > div.container.body-content {
+    width: 300px;
+}
+
+.modal-backdrop
+{
+    opacity:0 !important;
+}
+
+#modal-container > div {
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 20px;
+}
+
+.accepted {
+    background-color: #BEEDBF;
+}
+
+.declined {
+    background-color: #F7C3C3;
+}
+
+.deleted {
+    background-color: white;
+}
+
+.pending {
+    background-color: #F7F088;
+}
+
+table {
+    padding:0px;
+    border-collapse: collapse;
+}
+
+.navbar-inverse {
+    background-color: #fffdd2;
+    border-color: #e2de7b;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #e86407;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #fdbe0d;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #e86407;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #fdbe0d;
+    background-color: transparent;
+}
+
+/*recaptcha*/
+.g-recaptcha {
+    transform:scale(0.83);
+    -webkit-transform:scale(0.83);
+    transform-origin:0 0;
+    -webkit-transform-origin:0 0;
+    position:relative;
+    left:5px;
+}
+
+body > div.navbar.navbar-inverse.navbar-fixed-top > div > div.navbar-header > a {
+    font-size: 30px;
+}
+
+body > div.container.body-content > div.alert.alert-success.fade.in {
+    position: relative;
+    top: 40px;
+}
+
+.body-content {  
+    padding-top: 110px;
+}
+#logoutForm > ul {
+    padding-right: 80px;
+    padding-top: 40px;
+    font-size: 20px;
+}
+body > div.navbar.navbar-inverse.navbar-fixed-top > div > div.navbar-collapse.collapse > ul {
+    padding-right: 80px;
+    padding-top: 40px;
+    font-size: 20px;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #e48d2e;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #fef031;
+}

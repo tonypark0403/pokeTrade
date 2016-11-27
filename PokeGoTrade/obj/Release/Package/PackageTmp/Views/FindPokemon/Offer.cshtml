@@ -1,0 +1,86 @@
+﻿@model PokeGoTradeModel.ViewModels.OfferViewModel
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Content/modal2.css">
+  
+    @*@using (Html.BeginForm("PostOffer", "FindPokemon", FormMethod.Post, new { id = "postOfferForm" }))*@
+
+    @using (Ajax.BeginForm("PostOffer", "FindPokemon", new AjaxOptions
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        //execute closeModal function after the form is submitted
+        OnBegin = "closeModal"       
+    }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.PostingId)
+        @Html.HiddenFor(model => model.CurrentUser)
+        @Html.HiddenFor(model => model.SelectedUser)
+        @Html.HiddenFor(model => model.Country)
+        @Html.HiddenFor(model => model.State)
+        @Html.HiddenFor(model => model.City)
+        @Html.HiddenFor(model => model.PokemonOwned)
+        @Html.HiddenFor(model => model.PokemonWanted)
+
+        <div id="test" class="">
+            <div class="modal-title title">
+                <input type="submit" id="submit" value="Submit" class="btn btn-default offer" /><span id="closes">x</span>
+            </div>
+            <div id="info">
+                <p>Enter Comments</p>
+                @Html.TextAreaFor(model => model.Comments, new { @placeholder = "Ex: meeting location", style = "width:400px; height:150px;" })
+            </div>
+        </div>
+            @*<div class="col-md-12">
+                    <input type="button" id="close" value="Close" class="btn btn-default offer" />
+                    <input type="submit" id="submit" value="Submit" class="btn btn-default offer" />
+                </div>*@
+            }
+        
+
+<script>
+    function closeModal() {
+        $('#modal-container').modal('hide');
+        alert("Submited Successfully");
+    }
+
+    $('#closes').click(function () {
+        $('#modal-container').modal('hide');
+    });
+
+    //limit characters in textarea and copy&paste characters
+    $(document).ready(function () {
+        function limits(obj, limit) {
+            var text = $(obj).val();
+            var length = text.length;
+            if (length > limit) {
+                $(obj).val(text.substr(0, limit));
+            }
+        }
+
+        $('textarea').keyup(function () {            
+            limits($(this), 200);           
+        })
+    })    
+
+    //Everything works using this, except that it is submitting the form twice. Ajax issue?
+    @*//$(function() {
+        $(document).on("submit", "#postOfferForm", function(e) {
+            e.preventDefault();            
+            $.post($(this).attr("action"),$(this).serialize(),function(response) {
+                console.log('response from ajax call', response);
+                if (response.status === "success") {                   
+                    $('#modal-container').modal('hide');                    
+                    alert("Submited");
+                } else {
+                    alert(response.errorMessage);
+                }
+            })
+        });
+    })*@   
+</script>

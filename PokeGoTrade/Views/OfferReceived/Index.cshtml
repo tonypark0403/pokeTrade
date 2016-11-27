@@ -1,0 +1,237 @@
+﻿@model PagedList.IPagedList<PokeGoTradeModel.Models.OfferReceived>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Received Offer(s)";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="~/Content/table.css">
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a href="~/Home/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}
+@if (Request.IsAuthenticated && User.IsInRole("User"))
+{
+    <a href="~/Home/IndexUser"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+}
+
+<div id="form">
+    <p>Received<span> Offer(s)</span></p>
+</div>
+<br /><br /><br /><br />
+
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+@if (Model.Count < 1)
+{
+    <div class="table-responsive">
+        <table class="table table-hover posting">
+            <tr>
+                <th>You have not received any offers yet.</th>
+            </tr>
+        </table>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover" id="offerReceivedTable">
+            <tr>
+                <th>
+                    @Html.DisplayName("Country")
+                </th>
+                <th>
+                    @Html.DisplayName("State")
+                </th>
+                <th>
+                    @Html.DisplayName("City")
+                </th>
+                <th>
+                    @Html.DisplayName("Username")
+                </th>
+                <th>
+                    @Html.DisplayName("My Pokemon")
+                </th>
+                <th>
+                    @Html.DisplayName("Trade with")
+                </th>
+                <th>
+                    @Html.DisplayName("Comment")
+                </th>
+                <th>
+                    @Html.DisplayName("Choice")
+                </th>
+                <th>
+                    @Html.DisplayName("Received on")
+                </th>                
+            </tr>
+
+            @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrentUser)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PokemonOwned)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PokemonWanted)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Comment", "Comment", "OfferReceived",
+                                           new
+                                           {
+                                               offerReceivedId = item.OfferReceivedId
+                                           },
+                                           new
+                                           {
+                                               @class = "btn btn-info btn-xs",
+                                               data_toggle = "modal",
+                                               data_target = "#modal-container"
+                                           })
+                    </td>
+
+                    <td class="choice">
+                        @if (item.Choice == null)
+                    {
+                            @Html.ActionLink("Accept", "Choice", "OfferReceived",
+                                               new
+                                               {
+                                                   id = item.OfferReceivedId,
+                                                   choice = "Accepted"
+                                               },
+                                               new
+                                               {
+                                                   id = "Accepted",
+                                                   @class = "btn btn-success btn-xs"
+                                               })
+
+                            @Html.ActionLink("Decline", "Choice", "OfferReceived",
+                                               new
+                                               {
+                                                   id = item.OfferReceivedId,
+                                                   choice = "Declined"
+                                               },
+                                               new
+                                               {
+                                                   id = "Declined",
+                                                   @class = "btn btn-danger btn-xs"
+                                               })
+                        }
+                        else if (item.Choice == "Accepted")
+                        {
+                            <span>Accepted</span>
+                        }
+                        else if (item.Choice == "Declined")
+                        {
+                            <span>Declined</span>
+                        }
+                        else if (item.Choice == "Deleted")
+                        {
+                            <span>Offer was Deleted</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTimeValue)
+                    </td>
+                    @*<td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.OfferReceivedId })
+                    </td>*@
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+
+<div id="modal-container" class="modal fade" tableindex="-1" role="dialog">
+    <div class="modal-content" style="width:350px !important; height: 360px !important; margin: 70px auto !important;">
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            $('#offerReceivedTable td span').each(function () {
+                if ($(this).text() === 'Accepted') {
+                    $(this).closest('tr').addClass('accepted');
+                }
+                if ($(this).text() === 'Declined') {
+                    $(this).closest('tr').addClass('declined');
+                }
+                if ($(this).text() === 'Offer was Deleted') {
+                    $(this).closest('tr').addClass('deleted');
+                }
+            });
+
+            $('#offerReceivedTable td.choice #Accepted').click(function () {
+                $.ajax({
+                    url: this.href,
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        if (result.status === "success") {
+                            window.location.reload(true);
+                        }
+                        if (result.status === "null") {
+                            //alert("Username " + result.username + " deleted the offer");
+                            window.location.reload(true);
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#offerReceivedTable td.choice #Declined').click(function () {
+                $.ajax({
+                    url: this.href,
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        if (result.status === "success") {
+                            window.location.reload(true);
+                        }
+                        if (result.status === "null") {
+                            //alert("Username " + result.username + " deleted the offer");
+                            window.location.reload(true);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        ////go back
+        //$('.back').click(function (ev) {
+        //    ev.preventDefault();
+        //    history.back();
+        //});
+    </script>

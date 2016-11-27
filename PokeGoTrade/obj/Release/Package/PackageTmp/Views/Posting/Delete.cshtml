@@ -1,0 +1,98 @@
+﻿@model PokeGoTradeModel.Models.Posting
+
+@{
+    ViewBag.Title = "Delete";
+}
+<style>
+    .edit {
+        margin: 0px 300px;
+    }
+</style>
+
+<link rel="stylesheet" media="screen" href="~/Content/button.css" />
+
+<a href="~/Posting/Index"><img class="back" src="~/Content/imgs/backbutton.png"></a>
+
+<div class="edit">
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Posting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Country")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("State/Province")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("City")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Wanted")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pokemon.Name)
+        </dd>
+     
+        <dt>
+            @Html.DisplayName("Comment")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>      
+        
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />          
+        </div>
+    }
+</div>
+</div>
+
+@*<script>
+//go back
+    $('.back').click(function (ev) {
+        ev.preventDefault();
+        history.back();
+    });
+</script>*@

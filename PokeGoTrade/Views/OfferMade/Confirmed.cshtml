@@ -1,0 +1,29 @@
+﻿@model PokeGoTradeModel.Models.Posting
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Content/modal.css">
+
+<div id="test" class="">
+    <div class="modal-title title">
+        <p id="contact">@ViewBag.userName Contact Info</p><span id="closes">x</span>
+    </div>
+    <div id="info">
+        <p>@Html.Label("Email: ") @ViewBag.email</p>
+        <p>@Html.Label("Telephone: ") @ViewBag.telephone</p>
+        <p>@Html.Label("Comment: ") @ViewBag.comment</p>
+    </div>    
+    @*<div class="col-md-12">
+        <input type="button" id="close" value="Close" class="btn btn-default" />      
+    </div>*@    
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#closes').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+</script>
